@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html,body{height:100%;overflow:hidden;background:#031015;font-family:-apple-system,system-ui,sans-serif;touch-action:pan-x}
+.slider{display:flex;width:400%;height:100%;transition:transform .3s ease}
+.slide{width:25%;height:100%;display:flex;flex-direction:column;justify-content:space-between;padding:24px 20px 16px}
+.hdr{display:flex;justify-content:space-between;align-items:center}
+.title{color:rgba(0,229,255,.85);font-size:12px;font-weight:700;letter-spacing:1.5px}
+.chip{background:rgba(0,229,255,.12);color:#00e5ff;font-size:9px;font-weight:700;padding:4px 10px;border-radius:8px;display:flex;align-items:center;gap:5px}
+.dot{width:6px;height:6px;border-radius:50%;background:#00e5ff;box-shadow:0 0 6px #00e5ff;animation:pulse 1.5s infinite}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(.85)}}
+.body{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px}
+.big{font-family:monospace;font-size:72px;font-weight:300;color:#00e5ff;text-shadow:0 0 20px rgba(0,229,255,.5);letter-spacing:-2px}
+.sub{font-size:13px;color:rgba(255,255,255,.65);font-family:monospace}
+.ft{font-size:10px;color:rgba(255,255,255,.3);text-align:center;font-family:monospace}
+.dots{display:flex;gap:8px;justify-content:center;margin-bottom:8px}
+.dots span{width:8px;height:8px;border-radius:50%;background:rgba(0,229,255,.25)}
+.dots span.active{background:#00e5ff;box-shadow:0 0 6px #00e5ff}
+
+/* Slide 1: Voice waveform */
+.wv{display:flex;gap:4px;height:28px;align-items:center}
+.wv span{width:4px;background:#00e5ff;border-radius:2px;box-shadow:0 0 4px #00e5ff;animation:wave 1s ease-in-out infinite}
+.wv span:nth-child(1){animation-delay:0s;height:8px}.wv span:nth-child(2){animation-delay:.1s;height:16px}.wv span:nth-child(3){animation-delay:.2s;height:24px}.wv span:nth-child(4){animation-delay:.3s;height:18px}.wv span:nth-child(5){animation-delay:.4s;height:28px}.wv span:nth-child(6){animation-delay:.5s;height:12px}.wv span:nth-child(7){animation-delay:.6s;height:22px}.wv span:nth-child(8){animation-delay:.7s;height:10px}.wv span:nth-child(9){animation-delay:.8s;height:20px}
+@keyframes wave{0%,100%{transform:scaleY(.4);opacity:.5}50%{transform:scaleY(1.2);opacity:1}}
+
+/* Slide 2: Chat typing */
+.typg{display:flex;gap:8px;align-items:center}
+.typg span{width:8px;height:8px;border-radius:50%;background:#00e5ff;box-shadow:0 0 6px #00e5ff;animation:typg 1.2s infinite}
+.typg span:nth-child(2){animation-delay:.2s}.typg span:nth-child(3){animation-delay:.4s}
+@keyframes typg{0%,60%,100%{opacity:.3;transform:translateY(0)}30%{opacity:1;transform:translateY(-6px)}}
+.chat-bubble{background:rgba(0,229,255,.08);border-radius:12px;padding:14px 16px;width:85%;margin-bottom:8px}
+.chat-label{font-size:10px;color:rgba(0,229,255,.7);font-weight:700;margin-bottom:6px}
+.chat-text{font-size:12px;color:rgba(255,255,255,.8);font-family:monospace;line-height:1.5}
+
+/* Slide 3: Orb listening */
+.orb-w{position:relative;width:120px;height:120px;display:flex;align-items:center;justify-content:center}
+.orb{width:60px;height:60px;border-radius:50%;background:radial-gradient(circle,#00e5ff 0%,rgba(0,229,255,.3) 50%,transparent 100%);animation:orbP 2s ease-in-out infinite}
+.orb-r{position:absolute;width:90px;height:90px;border:1.5px solid rgba(0,229,255,.4);border-radius:50%;animation:orbR 2s ease-out infinite}
+.orb-r:nth-child(3){animation-delay:.7s;width:110px;height:110px}
+@keyframes orbP{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(1.15);opacity:.7}}
+@keyframes orbR{0%{transform:scale(.7);opacity:1}100%{transform:scale(1.4);opacity:0}}
+.listen-text{font-size:16px;color:#00e5ff;font-weight:700;letter-spacing:3px;margin-top:8px}
+
+/* Slide 4: Stats spark */
+.spark{display:flex;gap:3px;height:40px;align-items:flex-end}
+.spark span{width:6px;background:linear-gradient(to top,rgba(0,229,255,.3),#00e5ff);border-radius:2px}
+.stats-row{display:flex;gap:24px;margin-bottom:12px}
+.stat{text-align:center}
+.stat-val{font-family:monospace;font-size:32px;color:#00e5ff;font-weight:300;text-shadow:0 0 10px rgba(0,229,255,.4)}
+.stat-label{font-size:9px;color:rgba(0,229,255,.6);letter-spacing:1px;margin-top:2px}
+</style>
+</head>
+<body>
+<div class="slider" id="slider">
+
+<!-- Slide 1: VOICE -->
+<div class="slide">
+  <div class="hdr"><span class="title">BUDDY // VOICE</span><span class="chip"><span class="dot"></span>SYNC</span></div>
+  <div class="body">
+    <div class="big" id="clock1">--:--</div>
+    <div class="sub">&gt; diga "Buddy..."</div>
+    <div class="wv"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
+  </div>
+  <div class="dots"><span class="active"></span><span></span><span></span><span></span></div>
+  <div class="ft">swipe para trocar modelo</div>
+</div>
+
+<!-- Slide 2: CHAT -->
+<div class="slide">
+  <div class="hdr"><span class="title">BUDDY // CHAT</span><span class="chip">3 MSG</span></div>
+  <div class="body">
+    <div class="chat-bubble"><div class="chat-label">Buddy:</div><div class="chat-text">Prox reuniao: 14:30<br>1:1 com Elizia.<br>Levo 20min de carro.</div></div>
+    <div class="typg"><span></span><span></span><span></span></div>
+    <div class="sub">pensando...</div>
+  </div>
+  <div class="dots"><span></span><span class="active"></span><span></span><span></span></div>
+  <div class="ft">ultima: 2min atras</div>
+</div>
+
+<!-- Slide 3: LISTEN -->
+<div class="slide">
+  <div class="hdr"><span class="title">BUDDY // LISTEN</span><span class="chip"><span class="dot"></span>ON</span></div>
+  <div class="body">
+    <div class="orb-w"><div class="orb-r"></div><div class="orb-r"></div><div class="orb"></div></div>
+    <div class="listen-text">OUVINDO</div>
+    <div class="sub">fale algo...</div>
+  </div>
+  <div class="dots"><span></span><span></span><span class="active"></span><span></span></div>
+  <div class="ft">wake word ativo</div>
+</div>
+
+<!-- Slide 4: STATS -->
+<div class="slide">
+  <div class="hdr"><span class="title">BUDDY // STATS</span><span class="chip">HOJE</span></div>
+  <div class="body">
+    <div class="stats-row"><div class="stat"><div class="stat-val">12</div><div class="stat-label">CALLS</div></div><div class="stat"><div class="stat-val">4.2k</div><div class="stat-label">TOKENS</div></div></div>
+    <div class="spark"><span style="height:30%"></span><span style="height:50%"></span><span style="height:40%"></span><span style="height:80%"></span><span style="height:60%"></span><span style="height:90%"></span><span style="height:45%"></span><span style="height:70%"></span><span style="height:100%"></span><span style="height:55%"></span><span style="height:85%"></span><span style="height:35%"></span></div>
+    <div class="sub" style="margin-top:8px">pico: 14h - top: agenda</div>
+  </div>
+  <div class="dots"><span></span><span></span><span></span><span class="active"></span></div>
+  <div class="ft">atualiza 5min</div>
+</div>
+
+</div>
+<script>
+const slider=document.getElementById('slider');let cur=0;const total=4;
+function go(n){cur=Math.max(0,Math.min(total-1,n));slider.style.transform='translateX(-'+(cur*25)+'%)';}
+let sx=0,dx=0;
+document.addEventListener('touchstart',e=>{sx=e.touches[0].clientX;dx=0;});
+document.addEventListener('touchmove',e=>{dx=e.touches[0].clientX-sx;});
+document.addEventListener('touchend',()=>{if(Math.abs(dx)>40){dx<0?go(cur+1):go(cur-1);}});
+function updateClock(){const d=new Date();const t=String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0');document.getElementById('clock1').textContent=t;}
+updateClock();setInterval(updateClock,10000);
+<\/script>
+</body></html>

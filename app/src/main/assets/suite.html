@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html,body{height:100%;overflow:hidden;background:#180a03;font-family:-apple-system,system-ui,sans-serif;touch-action:pan-x}
+.slider{display:flex;width:400%;height:100%;transition:transform .3s ease}
+.slide{width:25%;height:100%;display:flex;flex-direction:column;justify-content:space-between;padding:24px 20px 16px}
+.hdr{display:flex;justify-content:space-between;align-items:center}
+.title{color:rgba(255,153,0,.9);font-size:12px;font-weight:700;letter-spacing:1.5px}
+.chip{background:rgba(255,153,0,.16);color:#ffb84d;font-size:9px;font-weight:700;padding:4px 10px;border-radius:8px;display:flex;align-items:center;gap:5px}
+.dot{width:6px;height:6px;border-radius:50%;background:#ff9900;box-shadow:0 0 6px #ff9900;animation:pulse 1.5s infinite}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(.85)}}
+.body{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px}
+.big{font-family:monospace;font-size:72px;font-weight:300;color:#ff9900;text-shadow:0 0 20px rgba(255,153,0,.5);letter-spacing:-2px}
+.sub{font-size:13px;color:rgba(255,255,255,.65);font-family:monospace}
+.ft{font-size:10px;color:rgba(255,255,255,.3);text-align:center;font-family:monospace}
+.dots{display:flex;gap:8px;justify-content:center;margin-bottom:8px}
+.dots span{width:8px;height:8px;border-radius:50%;background:rgba(255,153,0,.25)}
+.dots span.active{background:#ff9900;box-shadow:0 0 6px #ff9900}
+
+/* Slide 1: Timeline */
+.tl{display:flex;gap:5px;align-items:center}
+.tl span{width:8px;height:8px;border-radius:50%;background:rgba(255,153,0,.2)}
+.tl .done{background:#ff9900;opacity:.5}
+.tl .act{background:#ff9900;box-shadow:0 0 8px #ff9900;animation:tlP 1.2s infinite}
+@keyframes tlP{0%,100%{transform:scale(1)}50%{transform:scale(1.5)}}
+
+/* Slide 2: Tasks progress */
+.tbar{width:80%;height:6px;background:rgba(255,153,0,.12);border-radius:4px;overflow:hidden}
+.tbar-f{height:100%;background:linear-gradient(90deg,#ff9900,#ffb84d);border-radius:4px;animation:tfill 2.5s ease-out forwards}
+@keyframes tfill{0%{width:0}100%{width:67%}}
+.chks{display:flex;gap:5px}
+.chks span{width:14px;height:14px;border-radius:3px;border:1.5px solid rgba(255,153,0,.4);display:flex;align-items:center;justify-content:center;font-size:9px}
+.chks .ok{background:#ff9900;border-color:#ff9900;color:#000;font-weight:900}
+.task-list{font-size:12px;color:rgba(255,255,255,.75);font-family:monospace;text-align:left;line-height:2;width:80%}
+.task-list .done-text{color:#ff9900}
+.task-list .pending{opacity:.5}
+
+/* Slide 3: Elizia heatmap */
+.egrid{display:grid;grid-template-columns:repeat(11,1fr);gap:3px;width:85%}
+.egrid span{aspect-ratio:1;border-radius:2px;background:rgba(255,100,0,.12)}
+.egrid .w{background:rgba(255,200,0,.5)}.egrid .a{background:#ff3300;box-shadow:0 0 4px #ff3300;animation:ablink 1.5s infinite}
+@keyframes ablink{0%,100%{opacity:1}50%{opacity:.4}}
+.elizia-big{font-family:monospace;font-size:40px;color:#ff3300;font-weight:300;text-shadow:0 0 12px rgba(255,50,0,.4)}
+
+/* Slide 4: Notes cursor */
+.nt{font-size:13px;color:rgba(255,255,255,.85);font-family:monospace;text-align:left;width:80%;line-height:1.7}
+.cur{display:inline-block;width:2px;height:12px;background:#ff9900;margin-left:2px;animation:blink 1s infinite;vertical-align:middle}
+@keyframes blink{0%,50%{opacity:1}51%,100%{opacity:0}}
+</style>
+</head>
+<body>
+<div class="slider" id="slider">
+
+<!-- Slide 1: HOJE -->
+<div class="slide">
+  <div class="hdr"><span class="title">SUITE // HOJE</span><span class="chip"><span class="dot"></span>4/6</span></div>
+  <div class="body">
+    <div class="big" id="clock1">--:--</div>
+    <div class="sub">1:1 com Elizia</div>
+    <div class="tl">
+      <span class="done"></span><span class="done"></span><span class="done"></span><span class="done"></span><span class="act"></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+    </div>
+  </div>
+  <div class="dots"><span class="active"></span><span></span><span></span><span></span></div>
+  <div class="ft">2 pendentes - prox 14:30</div>
+</div>
+
+<!-- Slide 2: TASKS -->
+<div class="slide">
+  <div class="hdr"><span class="title" style="color:rgba(76,175,80,.9)">SUITE // TASKS</span><span class="chip" style="background:rgba(76,175,80,.14);color:#66bb6a">4/6</span></div>
+  <div class="body">
+    <div class="chks"><span class="ok">&#10003;</span><span class="ok">&#10003;</span><span class="ok">&#10003;</span><span class="ok">&#10003;</span><span></span><span></span></div>
+    <div class="tbar"><div class="tbar-f"></div></div>
+    <div class="task-list">
+      <span class="done-text">&#10003;</span> Enviar report DPMO<br>
+      <span class="done-text">&#10003;</span> 1:1 com Elizia<br>
+      <span class="pending">&#9675; Revisar aging SCO9</span>
+    </div>
+  </div>
+  <div class="dots"><span></span><span class="active"></span><span></span><span></span></div>
+  <div class="ft">67% concluido hoje</div>
+</div>
+
+<!-- Slide 3: ELIZIA -->
+<div class="slide">
+  <div class="hdr"><span class="title" style="color:rgba(255,80,0,.9)">SUITE // ELIZIA</span><span class="chip" style="background:rgba(255,50,0,.14);color:#ff6644">33 NODES</span></div>
+  <div class="body">
+    <div class="elizia-big">SCO9</div>
+    <div class="sub">top ofensor LOST - 142 un</div>
+    <div class="egrid">
+      <span></span><span></span><span class="w"></span><span></span><span class="a"></span><span></span><span></span><span></span><span class="w"></span><span></span><span></span>
+      <span></span><span class="w"></span><span></span><span></span><span></span><span class="a"></span><span></span><span></span><span></span><span class="w"></span><span></span>
+      <span class="a"></span><span></span><span></span><span class="w"></span><span></span><span></span><span></span><span></span><span class="w"></span><span></span><span></span>
+    </div>
+    <div class="sub" style="margin-top:6px">PDN1 - SPG9 - SPC9 - SUB9</div>
+  </div>
+  <div class="dots"><span></span><span></span><span class="active"></span><span></span></div>
+  <div class="ft">RJ/MG/ES - atualiza 30min</div>
+</div>
+
+<!-- Slide 4: NOTES -->
+<div class="slide">
+  <div class="hdr"><span class="title" style="color:rgba(171,130,255,.9)">SUITE // NOTAS</span><span class="chip" style="background:rgba(171,130,255,.14);color:#ab82ff">7 NOTAS</span></div>
+  <div class="body">
+    <div class="nt">
+      Lembrar: pedir dados<br>consolidados do aging<br>pra Elizia antes do 1:1<br>de quarta<span class="cur"></span>
+    </div>
+  </div>
+  <div class="dots"><span></span><span></span><span></span><span class="active"></span></div>
+  <div class="ft">editada ha 12min</div>
+</div>
+
+</div>
+<script>
+const slider=document.getElementById('slider');let cur=0;const total=4;
+function go(n){cur=Math.max(0,Math.min(total-1,n));slider.style.transform='translateX(-'+(cur*25)+'%)';}
+let sx=0,dx=0;
+document.addEventListener('touchstart',e=>{sx=e.touches[0].clientX;dx=0;});
+document.addEventListener('touchmove',e=>{dx=e.touches[0].clientX-sx;});
+document.addEventListener('touchend',()=>{if(Math.abs(dx)>40){dx<0?go(cur+1):go(cur-1);}});
+function updateClock(){const d=new Date();const t=String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0');document.getElementById('clock1').textContent=t;}
+updateClock();setInterval(updateClock,10000);
+<\/script>
+</body></html>
