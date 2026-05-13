@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Lucas Widgets</string>
+    <string name="buddy_desc">Buddy - Assistente de Voz</string>
+    <string name="palco_desc">Palco - Shows e Musica</string>
+    <string name="suite_desc">Suite - Produtividade</string>
+</resources>
